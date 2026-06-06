@@ -1,0 +1,216 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cairo:wght@400;600;700&display=swap');
+
+/* الـ 3 ديزاينات المطلوبة بالتناوب */
+[data-theme="dark"] {
+    --bg-color: #02042c;
+    --card-bg: #1a1b35;
+    --card-hover-bg: #23254a;
+    --accent-blue: #4355db;
+    --accent-blue-hover: #3242b3;
+    --text-main: #ffffff;
+    --text-muted: #7f84a3;
+    --border-focus: #5164f7;
+    --gradient-card: linear-gradient(135deg, #1d2ebd 0%, #3a4be0 100%);
+}
+
+[data-theme="light"] {
+    --bg-color: #f0f2f5;
+    --card-bg: #ffffff;
+    --card-hover-bg: #eef1f6;
+    --accent-blue: #2563eb;
+    --accent-blue-hover: #1d4ed8;
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --border-focus: #3b82f6;
+    --gradient-card: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+}
+
+[data-theme="midnight"] {
+    --bg-color: #020617;
+    --card-bg: #0f172a;
+    --card-hover-bg: #1e293b;
+    --accent-blue: #0ea5e9;
+    --accent-blue-hover: #0284c7;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-focus: #38bdf8;
+    --gradient-card: linear-gradient(135deg, #0369a1 0%, #0ea5e9 100%);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+/* استخدام خط Cairo الجميل تلقائياً عند تفعيل اللغة العربية لجمال المظهر */
+html[lang="ar"] * {
+    font-family: 'Cairo', sans-serif;
+}
+html:not([lang="ar"]) * {
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto 40px auto;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.header-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.control-btn {
+    background-color: var(--card-bg);
+    border: 1px solid transparent;
+    color: var(--text-main);
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.control-btn:hover { background-color: var(--card-hover-bg); }
+.dropdown-container { position: relative; }
+
+.dropdown-menu {
+    position: absolute;
+    background-color: var(--card-bg);
+    border: 1px solid rgba(127, 132, 163, 0.3);
+    border-radius: 8px;
+    width: 220px;
+    padding: 8px 0;
+    z-index: 100;
+    display: none;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* التبديل التلقائي لتموضع القوائم المنسدلة حسب الـ Direction */
+html[dir="rtl"] .dropdown-menu { left: 0; right: auto; }
+html[dir="ltr"] .dropdown-menu { right: 0; left: auto; }
+.dropdown-menu.show { display: block; }
+
+.dropdown-item {
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-main);
+}
+.dropdown-item:hover { background-color: var(--card-hover-bg); }
+.dropdown-divider { height: 1px; background-color: var(--text-muted); opacity: 0.2; margin: 6px 0; }
+.check-mark { display: none; }
+.dropdown-item.active .check-mark { display: block; }
+
+/* Dashboard Content & Grid Layout */
+.container { max-width: 1200px; margin: 0 auto; }
+.main-title { text-align: center; font-size: 2.2rem; margin-bottom: 30px; }
+
+.search-wrapper { display: flex; max-width: 600px; margin: 0 auto 40px auto; gap: 10px; }
+.search-bar-container { position: relative; flex: 1; }
+
+.search-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+html[dir="rtl"] .search-icon { right: 15px; }
+html[dir="ltr"] .search-icon { left: 15px; }
+
+.search-wrapper input {
+    width: 100%;
+    background-color: var(--card-bg);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: var(--text-main);
+    font-size: 1rem;
+    outline: none;
+}
+html[dir="rtl"] .search-wrapper input { padding: 14px 45px 14px 15px; }
+html[dir="ltr"] .search-wrapper input { padding: 14px 15px 14px 45px; }
+.search-wrapper input:focus { border-color: var(--border-focus); }
+
+.search-btn {
+    background-color: var(--accent-blue);
+    color: #fff;
+    border: none;
+    padding: 0 24px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.search-btn:hover { background-color: var(--accent-blue-hover); }
+
+.autocomplete-dropdown {
+    position: absolute;
+    top: 55px; left: 0; right: 0;
+    background-color: var(--card-bg);
+    border: 1px solid rgba(127, 132, 163, 0.3);
+    border-radius: 8px; max-height: 200px; overflow-y: auto; z-index: 90; display: none;
+}
+.autocomplete-item { padding: 12px 16px; cursor: pointer; border-bottom: 1px solid rgba(0,0,0,0.05); color: var(--text-main); }
+.autocomplete-item:hover { background-color: var(--card-hover-bg); }
+
+.weather-dashboard-layout { display: grid; grid-template-columns: 1fr 350px; gap: 30px; }
+
+.main-weather-card {
+    background: var(--gradient-card);
+    border-radius: 16px; padding: 30px;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 24px; color: #fff;
+}
+.main-temp { font-size: 4.5rem; font-weight: 300; }
+.weather-art-sun { font-size: 3.5rem; }
+
+.weather-details-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 40px; }
+.detail-card { background-color: var(--card-bg); padding: 20px; border-radius: 12px; display: flex; flex-direction: column; gap: 8px; }
+.detail-label { color: var(--text-muted); font-size: 0.85rem; }
+.detail-value { font-size: 1.3rem; font-weight: 600; }
+
+.daily-forecast-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+.daily-card { background-color: var(--card-bg); padding: 15px 5px; border-radius: 12px; text-align: center; display: flex; flex-direction: column; gap: 10px; }
+.daily-card.active-day-border { border: 2px solid var(--border-focus); }
+
+.hourly-forecast-section { background-color: var(--card-bg); border-radius: 16px; padding: 24px; }
+.hourly-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.hourly-day-select { background-color: var(--card-hover-bg); border: none; color: var(--text-main); padding: 6px 12px; border-radius: 6px; cursor: pointer; }
+.hourly-day-menu { position: absolute; left: 0; top: 35px; background-color: var(--card-bg); border: 1px solid rgba(127, 132, 163, 0.3); border-radius: 6px; display: none; z-index: 10; width: 130px;}
+.hourly-day-menu.show { display: block; }
+.hourly-day-menu div { padding: 8px 12px; cursor: pointer; font-size: 0.85rem; color: var(--text-main); }
+.hourly-day-menu div:hover { background-color: var(--card-hover-bg); }
+
+.hourly-list { display: flex; flex-direction: column; gap: 10px; max-height: 500px; overflow-y: auto; }
+.hourly-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background-color: var(--bg-color); border-radius: 10px; }
+.hourly-time-block { display: flex; align-items: center; gap: 10px; }
+
+.hidden { display: none !important; }
+.state-container { text-align: center; padding: 60px 20px; }
+.loader-dots span { display: inline-block; width: 10px; height: 10px; background-color: var(--text-main); border-radius: 50%; margin: 0 3px; animation: dots 0.6s infinite alternate; }
+.loader-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loader-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dots { from { opacity: 0.3; transform: translateY(0); } to { opacity: 1; transform: translateY(-6px); } }
+
+@media (max-width: 900px) {
+    .weather-dashboard-layout { grid-template-columns: 1fr; }
+    .weather-details-grid { grid-template-columns: repeat(2, 1fr); }
+    .daily-forecast-grid { grid-template-columns: repeat(4, 1fr); }
+}

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Now</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="logo">
+            <span class="logo-icon">☀️</span>
+            <span class="logo-text">Weather Now</span>
+        </div>
+        
+        <div class="header-controls">
+            <button class="control-btn" id="themeBtn">
+                <i class="fa-solid fa-palette"></i> <span id="themeLabel" data-i18n="themeDark">المظهر: داكن</span>
+            </button>
+
+            <div class="dropdown-container">
+                <button class="control-btn" id="langBtn">
+                    <i class="fa-solid fa-globe"></i> <span id="currentLangLabel">العربية</span> <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="dropdown-menu" id="langMenu">
+                    <div class="dropdown-item" data-lang="ar">العربية (AR)</div>
+                    <div class="dropdown-item" data-lang="en">English (EN)</div>
+                    <div class="dropdown-item" data-lang="es">Español (ES)</div>
+                    <div class="dropdown-item" data-lang="fr">Français (FR)</div>
+                    <div class="dropdown-item" data-lang="de">Deutsch (DE)</div>
+                    <div class="dropdown-item" data-lang="it">Italiano (IT)</div>
+                    <div class="dropdown-item" data-lang="pt">Português (PT)</div>
+                    <div class="dropdown-item" data-lang="ru">Русский (RU)</div>
+                    <div class="dropdown-item" data-lang="zh">中文 (ZH)</div>
+                    <div class="dropdown-item" data-lang="ja">日本語 (JA)</div>
+                    <div class="dropdown-item" data-lang="tr">Türkçe (TR)</div>
+                    <div class="dropdown-item" data-lang="hi">हिन्दी (HI)</div>
+                </div>
+            </div>
+
+            <div class="dropdown-container">
+                <button class="control-btn" id="unitsBtn">
+                    <i class="fa-solid fa-gear"></i> <span data-i18n="unitsBtn">الوحدات</span> <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="dropdown-menu" id="unitsMenu">
+                    <div class="dropdown-item" id="toggleImperial" data-i18n="switchToImperial">التحويل إلى الإمبراطوري</div>
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-item active" data-type="temp" data-value="c">Celsius (°C) <i class="fa-solid fa-check check-mark"></i></div>
+                    <div class="dropdown-item" data-type="temp" data-value="f">Fahrenheit (°F) <i class="fa-solid fa-check check-mark"></i></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1 class="main-title" data-i18n="mainTitle">كيف تبدو السماء اليوم؟</h1>
+        
+        <div class="search-wrapper">
+            <div class="search-bar-container">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="searchInput" placeholder="ابحث عن مكان..." data-i18n-holder="searchPlaceholder" autocomplete="off">
+                <div class="autocomplete-dropdown" id="autocompleteDropdown"></div>
+            </div>
+            <button id="searchBtn" class="search-btn" data-i18n="searchBtn">بحث</button>
+        </div>
+
+        <div id="loadingState" class="state-container hidden">
+            <div class="loader-dots"><span></span><span></span><span></span></div>
+            <p data-i18n="loading">جاري التحميل...</p>
+        </div>
+
+        <div id="errorState" class="state-container hidden">
+            <div class="error-icon">🚫</div>
+            <h2 data-i18n="errorTitle">حدث خطأ ما</h2>
+            <p data-i18n="errorDesc">لم نتمكن من الاتصال بالخادم.</p>
+            <button id="retryBtn" class="retry-btn"><i class="fa-solid fa-arrow-rotate-right"></i> <span data-i18n="retry">إعادة المحاولة</span></button>
+        </div>
+
+        <div id="noResultsState" class="state-container hidden">
+            <h2 class="no-results-text" data-i18n="noResults">لم يتم العثور على نتائج للبحث!</h2>
+        </div>
+
+        <div id="weatherContent" class="weather-dashboard-layout">
+            <div class="primary-weather-info">
+                <div class="main-weather-card">
+                    <div class="location-details">
+                        <h2 id="cityName">--</h2>
+                        <p id="currentDate">--</p>
+                    </div>
+                    <div class="temp-display-wrapper">
+                        <span id="mainWeatherIcon" class="weather-art-sun">☀️</span>
+                        <h1 class="main-temp" id="mainTemp">--°</h1>
+                    </div>
+                </div>
+
+                <div class="weather-details-grid">
+                    <div class="detail-card">
+                        <span class="detail-label" data-i18n="feelsLike">الشعور الحقيقي</span>
+                        <span class="detail-value" id="feelsLikeVal">--</span>
+                    </div>
+                    <div class="detail-card">
+                        <span class="detail-label" data-i18n="humidity">الرطوبة</span>
+                        <span class="detail-value" id="humidityVal">--</span>
+                    </div>
+                    <div class="detail-card">
+                        <span class="detail-label" data-i18n="wind">الرياح</span>
+                        <span class="detail-value" id="windVal">--</span>
+                    </div>
+                    <div class="detail-card">
+                        <span class="detail-label" data-i18n="precipitation">الهطول</span>
+                        <span class="detail-value" id="precipVal">--</span>
+                    </div>
+                </div>
+
+                <div class="daily-forecast-section">
+                    <h3 data-i18n="dailyForecast">التوقعات اليومية</h3>
+                    <div class="daily-forecast-grid" id="dailyForecastContainer"></div>
+                </div>
+            </div>
+
+            <div class="hourly-forecast-section">
+                <div class="hourly-header">
+                    <h3 data-i18n="hourlyForecast">التوقعات الساعية</h3>
+                    <div class="day-select-dropdown">
+                        <button id="hourlyDayBtn" class="hourly-day-select">-- <i class="fa-solid fa-chevron-down"></i></button>
+                        <div class="hourly-day-menu" id="hourlyDayMenu"></div>
+                    </div>
+                </div>
+                <div class="hourly-list" id="hourlyForecastContainer"></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
